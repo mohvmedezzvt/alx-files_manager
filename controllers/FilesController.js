@@ -9,11 +9,7 @@ class FilesController {
     const userId = await redisClient.get(`auth_${token}`);
     if (!userId) return res.status(401).json({ error: 'Unauthorized' });
 
-    const usersCollection = dbClient.db.collection('users');
-    const user = await usersCollection.findOne({
-      _id: new ObjectId(userId),
-    });
-    const { name, type, parentId, data } = req.body;
+    const { name, type, parentId = 0, isPublic = false, data } = req.body;
     const allowedTypes = ['folder', 'file', 'image']
 
     if (!name) {
@@ -27,7 +23,7 @@ class FilesController {
     }
 
     const filesCollection = dbClient.db.collection('files');
-    const parent = await usersCollection.findOne({
+    const parent = await filesCollection.findOne({
       _id: new ObjectId(parentId),
     });
 
@@ -41,7 +37,8 @@ class FilesController {
         userId,
         name,
         type,
-        parentId
+        parentId,
+
     }
 
     const result = await filesCollection.insertOne(newFile);
