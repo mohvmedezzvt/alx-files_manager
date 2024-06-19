@@ -117,7 +117,7 @@ class FilesController {
 
     const filesCollection = dbClient.db.collection('files');
     const file = await filesCollection.findOne({
-      _id: ObjectId(fileId),
+      _id: new ObjectId(fileId),
     });
 
     if (!file) {
@@ -125,7 +125,7 @@ class FilesController {
     }
 
     await filesCollection.updateOne(
-      { _id: ObjectId(fileId) },
+      { _id: new ObjectId(fileId) },
       { $set: { isPublic: true } }
     );
 
@@ -150,7 +150,7 @@ class FilesController {
 
     const filesCollection = dbClient.db.collection('files');
     const file = await filesCollection.findOne({
-      _id: ObjectId(fileId),
+      _id: new ObjectId(fileId),
     });
 
     if (!file) {
@@ -158,7 +158,7 @@ class FilesController {
     }
 
     await filesCollection.updateOne(
-      { _id: ObjectId(fileId) },
+      { _id: new ObjectId(fileId) },
       { $set: { isPublic: false } }
     );
 
